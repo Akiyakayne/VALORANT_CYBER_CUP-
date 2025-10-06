@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant Tournament Bracket - 16 Teams Double Elimination</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f1923 0%, #10161d 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: rgba(255, 70, 85, 0.1);
+            border-radius: 12px;
+            border-bottom: 3px solid #ff4655;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ff4655, transparent);
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255, 70, 85, 0.7);
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cecece;
+            margin-bottom: 20px;
+        }
+        
+        .tournament-info {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .info-item {
+            background: rgba(19, 33, 53, 0.7);
+            padding: 12px 25px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #2a3c56;
+            transition: all 0.3s ease;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 70, 85, 0.2);
+            border-color: #ff4655;
+        }
+        
+        .brackets-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .upper-bracket, .lower-bracket {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        
+        /* Основная колонка — центрирована */
+        .bracket-column {
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            align-items: center;
+            gap: 30px;
+        }
+
+        /* Группа из двух матчей (для Раунда 1) */
+        .match-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .bracket-title {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            color: #ff4655;
+            padding: 12px;
+            background: rgba(19, 33, 53, 0.7);
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid #2a3c56;
+            position: relative;
+        }
+        
+        .bracket-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff4655, transparent);
+        }
+        
+        .match {
+            background: rgba(15, 20, 42, 0.9);
+            border: 1px solid #2a3c56;
+            border-radius: 8px;
+            padding: 18px;
+            width: 280px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #2a3c56;
+        }
+
+        .match-number {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ff4655;
+            background: rgba(255, 70, 85, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .match-referee {
+            font-size: 0.8rem;
+            color: #8b9bb4;
+            font-style: italic;
+        }
+        
+        .match:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 70, 85, 0.25);
+            border-color: #ff4655;
+        }
+        
+        .match.bo5 {
+            border: 2px solid #ff4655;
+            background: rgba(255, 70, 85, 0.08);
+        }
+        
+        .match.bo5::before {
+            content: "BO5";
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: #ff4655;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+        }
+        
+        .match.bo3::before {
+            content: "BO3";
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: #2a3c56;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 8px;
+            border-bottom: 1px solid #2a3c56;
+            transition: all 0.2s ease;
+        }
+        
+        .team:hover {
+            background: rgba(255, 70, 85, 0.05);
+        }
+        
+        .team:last-child {
+            border-bottom: none;
+        }
+        
+        .seed {
+            background: #2a3c56;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            min-width: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .team-name {
+            flex-grow: 1;
+            margin-left: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .score {
+            background: #2a3c56;
+            padding: 4px 10px;
+            border-radius: 5px;
+            min-width: 28px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .winner .score {
+            background: #ff4655;
+            box-shadow: 0 0 8px rgba(255, 70, 85, 0.4);
+        }
+        
+        .winner .team-name {
+            color: #ff4655;
+            font-weight: 600;
+        }
+        
+        .loser .team-name {
+            opacity: 0.6;
+        }
+        
+        .match-info {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #8b9bb4;
+            padding-top: 12px;
+            border-top: 1px dashed #2a3c56;
+        }
+        
+        .final-match-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 70, 85, 0.1), rgba(255, 215, 0, 0.1));
+            border-radius: 8px;
+            border: 1px solid #ff4655;
+        }
+
+        .final-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .chief-referee {
+            font-size: 0.9rem;
+            color: #8b9bb4;
+            font-weight: 500;
+        }
+
+        .finals-section {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .final-match {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .trophy {
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+        }
+        
+        .trophy-icon {
+            font-size: 4rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+        
+        .tournament-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin-top: 15px;
+            text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+        }
+        
+        .logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .valorant-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" fill="white"/></svg>');
+            background-size: 30px 30px;
+            z-index: -1;
+        }
+        
+        .round-title {
+            font-size: 1.1rem;
+            color: #8b9bb4;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: 500;
+            width: 100%;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 1600px) {
+            .bracket-column {
+                min-width: 280px;
+            }
+            .match {
+                width: 270px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .bracket-column {
+                min-width: 260px;
+            }
+            .match {
+                width: 260px;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 20, 42, 0.5);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ff4655;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff002b;
+        }
+
+        /* Разделитель с текстом */
+        .section-divider {
+            position: relative;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff4655, transparent);
+            margin: 50px 0;
+            text-align: center;
+            overflow: visible;
+        }
+
+        .section-divider::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0f1923;
+            padding: 8px 18px;
+            color: #ff4655;
+            font-weight: bold;
+            font-size: 1.2rem;
+            font-family: 'Montserrat', sans-serif;
+            border: 1px solid #ff4655;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .bracket-section {
+            margin-bottom: 60px;
+            background: rgba(19, 33, 53, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #2a3c56;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Стили для матча в процессе */
+        .team.live {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 3px solid #ffd700;
+            position: relative;
+        }
+
+        .team.live::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .live-indicator {
+            color: #ffd700;
+            font-weight: 600;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .match.live {
+            border: 2px solid #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Анимация пульсации для LIVE */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Дополнительные стили для разных состояний */
+        .team.upcoming {
+            background: rgba(139, 155, 180, 0.1);
+            border-left: 3px solid #8b9bb4;
+        }
+
+        .team.upcoming .team-name {
+            color: #8b9bb4;
+            font-style: italic;
+        }
+
+        .match.upcoming {
+            opacity: 0.7;
+            border: 1px dashed #2a3c56;
+        }
+    </style>
+</head>
+<body>
+    <div class="valorant-pattern"></div>
+    <div class="container">
+
+        <!-- Заголовок -->
+        <header>
+            <h1>СТУДЕНЧЕСКИЙ КИБЕР-БАТТЛ | Кубок ЛАНИТ 2025</h1>
+            <p class="subtitle">16 команд | Double Elimination | Все матчи BO3 кроме Финала</p>
+            <div class="tournament-info">
+                <div class="info-item"><span>📅</span> 11 - 18 Октября 2025</div>
+                <div class="info-item"><span><img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/VLR_100X100.png" alt="LANIT Logo" style="width: 25px; height: auto;"></span> Valorant</div>
+                <div class="info-item"><span>🏆</span> Призовой фонд: 200 000 ₽</div>
+            </div>
+        </header>
+
+        <!-- Верхняя сетка -->
+        <div class="bracket-section">
+            <div class="section-divider" data-text="ВЕРХНЯЯ СЕТКА"></div>
+
+            <div class="brackets-container">
+                <div class="upper-bracket">
+                    <!-- Раунд 1 -->
+                    <div class="bracket-column">
+                    <div class="round-title">Раунд 1 (1/8 финала)</div>
+
+                    
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #1</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">СПБГТИ(ТУ)2</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">РТУ МИРЭА-1</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">20:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #2</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">KFU-2</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">Black Bears</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #3</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">СТАНКИН-2</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">TxT</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #4</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">KronBars Jr</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">ZVAL</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #5</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">OZON_FRECH</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">KronBars</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #6</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">p0d1ck and friends</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">CyberSPBU</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #7</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">TrainX</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">КФУ-1</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #8</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">СТТОРСТСМЕНbI</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">UrPOKU</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    </div>
+
+                    <!-- Раунд 2 -->
+                    <div class="bracket-column" style="margin-top: 528px;">
+                    <div class="round-title">Раунд 2 (1/4 финала)</div>
+                    
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #9</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #10</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #11</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #12</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    </div>
+
+                    <!-- Раунд 3 -->
+                    <div class="bracket-column" style="margin-top: 792px;">
+                    <div class="round-title">Раунд 3 (1/2 финала)</div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #17</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #18</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    </div>
+
+                    <!-- Финал верхней сетки -->
+                    <div class="bracket-column" style="margin-top: 925px;">
+                    <div class="round-title">Финал верхней сетки</div>
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #22</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+
+            <!-- Нижняя сетка -->
+        <div class="bracket-section">
+            <div class="section-divider" data-text="НИЖНЯЯ СЕТКА"></div>
+
+            <div class="lower-bracket">
+                <!-- Раунд 1 нижней сетки -->
+                <div class="bracket-column">
+                    <div class="round-title">Раунд 1</div>
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #13</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 | </div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #14</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #15</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #16</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                </div>
+
+                <!-- Раунд 2 нижней сетки -->
+                <div class="bracket-column">
+                    <div class="round-title">Раунд 2</div>
+
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #19</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #20</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #21</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #22</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                </div>
+
+                <!-- Раунд 3 нижней сетки -->
+                <div class="bracket-column" style="margin-top: 264px;">
+                    <div class="round-title">Раунд 3</div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #23</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #24</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                </div>
+
+                <!-- Раунд 4 нижней сетки -->
+                <div class="bracket-column" style="margin-top: 264px;">
+                    <div class="round-title">Раунд 4</div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #25</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #26</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                </div>
+
+                <!-- Раунд 5 -->
+                <div class="bracket-column" style="margin-top: 400px;">
+                    <div class="round-title">Раунд 5</div>
+                    <div class="match bo3">
+                        <div class="match-header">
+                            <span class="match-number">Матч #27</span>
+                            <span class="match-referee">Судья: Ivanov_A</span>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                        </div>
+                        <div class="match-info">15:00 |</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Гранд-финал -->                            
+        <div class="section-divider" data-text="ГРАНД-ФИНАЛ"></div>
+
+        <div class="finals-section">
+    <!-- Матч за 3 место -->
+    <div class="third-place-match">
+        <div class="bracket-column">
+            <div class="match bo3">
+                <div class="match-header">
+                    <span class="match-number">Матч за 3-место</span>
+                    <span class="match-referee">Судья: Ivanov_A</span>
+                </div>
+                <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                </div>
+                <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                </div>
+                <div class="match-info">18:00 |</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Гранд-финал -->
+    <div class="grand-final-match">
+        <div class="final-match">
+            <div class="match bo5 grand-final">
+                <div class="match-header">
+                    <span class="match-number">ФИНАЛ</span>
+                    <span class="match-referee">Судья: Ivanov_A</span>
+                </div>
+                <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                </div>
+                <div class="team upcoming"><div class="team-name">-</div><div class="score">0</div>
+                </div>
+                <div class="match-info">20:00 |</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="trophy">
+    <div class="trophy-icon">
+        <a href="https://t.me/+yVAWx0vUVHQ2ZjBi" target="_blank" rel="noopener noreferrer" class="logo-link">
+            <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/Logo-tg%20%D0%B1%D0%B5%D0%B7%20%D1%84%D0%BE%D0%BD%D0%B0.png" alt="WK Logo" style="width: 150px; height: auto;">
+        </a>
+    </div>
+    <div class="tournament-name">СТУДЕНЧЕСКИЙ КИБЕР-БАТТЛ | Кубок ЛАНИТ 2025</div>
+</div>
+
+        <!-- Логотип с ссылкой -->
+        <div class="logo">
+            <a href="https://lanit.ru/" target="_blank" rel="noopener noreferrer">
+                <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/%D0%9B%D0%90%D0%9D%D0%98%D0%A2.png" alt="LANIT Logo" style="width: 100px; height: auto;">
+            </a>
+        </div>
+
+    <script>
+        // Клик по матчу
+        document.querySelectorAll('.match').forEach(match => {
+            match.addEventListener('click', function() {
+                const teams = this.querySelectorAll('.team-name');
+                const scores = this.querySelectorAll('.score');
+                alert(`Детали матча:\n${teams[0].textContent} ${scores[0].textContent} - ${scores[1].textContent} ${teams[1].textContent}`);
+            });
+        });
+
+        // Функция для обновления LIVE матчей
+        function updateLiveMatches() {
+            document.querySelectorAll('.match.live').forEach(match => {
+                // Обновление таймера
+                const timer = match.querySelector('.match-timer');
+                if (timer) {
+                    // Логика обновления таймера
+                }
+
+                // Обновление счета карты
+                const mapScores = match.querySelectorAll('.map-score');
+                // Логика обновления счета
+            });
+        }
+
+        // Обновление каждые 5 секунд
+        setInterval(updateLiveMatches, 5000);
+
+        // Пульсация финала
+        document.querySelectorAll('.finals-section .match').forEach(match => {
+            match.classList.add('pulse');
+        });
+
+        // Перетаскивание
+        document.querySelectorAll('.upper-bracket, .lower-bracket').forEach(bracket => {
+            let isDragging = false;
+            let startX;
+            let scrollLeft;
+
+            bracket.addEventListener('mousedown', e => {
+                isDragging = true;
+                startX = e.pageX - bracket.offsetLeft;
+                scrollLeft = bracket.scrollLeft;
+                bracket.style.cursor = 'grabbing';
+            });
+
+            bracket.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - bracket.offsetLeft;
+                const walk = (x - startX) * 2;
+                bracket.scrollLeft = scrollLeft - walk;
+            });
+
+            ['mouseup', 'mouseleave'].forEach(event => {
+                bracket.addEventListener(event, () => {
+                    isDragging = false;
+                    bracket.style.cursor = 'grab';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
