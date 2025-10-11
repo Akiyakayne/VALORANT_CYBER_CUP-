@@ -993,14 +993,7 @@
         </div>
 
     <script>
-        // Клик по матчу
-        document.querySelectorAll('.match').forEach(match => {
-            match.addEventListener('click', function() {
-                const teams = this.querySelectorAll('.team-name');
-                const scores = this.querySelectorAll('.score');
-                alert(`Детали матча:\n${teams[0].textContent} ${scores[0].textContent} - ${scores[1].textContent} ${teams[1].textContent}`);
-            });
-        });
+
 
         // Функция для обновления LIVE матчей
         function updateLiveMatches() {
