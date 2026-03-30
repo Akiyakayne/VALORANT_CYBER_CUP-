@@ -1,1056 +1,1023 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valorant Tournament Bracket - 16 Teams Double Elimination</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0f1923 0%, #10161d 100%);
-            color: #fff;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1800px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 25px;
-            background: rgba(255, 70, 85, 0.1);
-            border-radius: 12px;
-            border-bottom: 3px solid #ff4655;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #ff4655, transparent);
-        }
-        
-        h1 {
-            font-size: 3.2rem;
-            margin-bottom: 15px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(255, 70, 85, 0.7);
-            font-weight: 700;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #cecece;
-            margin-bottom: 20px;
-        }
-        
-        .tournament-info {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .info-item {
-            background: rgba(19, 33, 53, 0.7);
-            padding: 12px 25px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #2a3c56;
-            transition: all 0.3s ease;
-        }
-        
-        .info-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 70, 85, 0.2);
-            border-color: #ff4655;
-        }
-        
-        .brackets-container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
-        .upper-bracket, .lower-bracket {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 20px 0;
-        }
-        
-        /* Основная колонка — центрирована */
-        .bracket-column {
-            display: flex;
-            flex-direction: column;
-            min-width: 300px;
-            align-items: center;
-            gap: 30px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КУБОК ЛАНИТ 2025 — VALORANT</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Titillium+Web:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --v:   #ff4655;
+  --v2:  #ff1a2e;
+  --cy:  #00e5ff;
+  --go:  #ffc107;
+  --bg0: #04070d;
+  --bg2: #0b1220;
+  --bg3: #0f1828;
+  --ln:  #1a2840;
+  --ln2: #22334e;
+  --t0:  #ffffff;
+  --t1:  #c8d8f0;
+  --t2:  #6a85a8;
+  --t3:  #3a5070;
+  --cw:  280px; /* card width */
+  --gap: 56px;  /* horizontal gap between columns */
+}
 
-        /* Группа из двух матчей (для Раунда 1) */
-        .match-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            align-items: center;
-        }
-        
-        .bracket-title {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 1.4rem;
-            color: #ff4655;
-            padding: 12px;
-            background: rgba(19, 33, 53, 0.7);
-            border-radius: 8px;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1px;
-            border: 1px solid #2a3c56;
-            position: relative;
-        }
-        
-        .bracket-title::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff4655, transparent);
-        }
-        
-        .match {
-            background: rgba(15, 20, 42, 0.9);
-            border: 1px solid #2a3c56;
-            border-radius: 8px;
-            padding: 18px;
-            width: 280px;
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #2a3c56;
-        }
+body {
+  background: var(--bg0);
+  color: var(--t1);
+  font-family: 'Titillium Web', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-        .match-number {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #ff4655;
-            background: rgba(255, 70, 85, 0.1);
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
+/* ── BACKGROUND ── */
+.bg-fx {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.bg-fx::before {
+  content: '';
+  position: absolute; top: -30%; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(255,70,85,0.08) 0%, transparent 65%);
+}
+.bg-fx::after {
+  content: '';
+  position: absolute; bottom: 0; right: -10%;
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,229,255,0.05) 0%, transparent 65%);
+}
+.scanlines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+}
+.deco-slash {
+  position: fixed; top: 0; right: 120px;
+  width: 2px; height: 100vh;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,70,85,0.15) 20%, rgba(255,70,85,0.08) 80%, transparent 100%);
+  transform: skewX(-15deg); pointer-events: none; z-index: 0;
+}
 
-        .match-referee {
-            font-size: 0.8rem;
-            color: #8b9bb4;
-            font-style: italic;
-        }
-        
-        .match:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 70, 85, 0.25);
-            border-color: #ff4655;
-        }
-        
-        .match.bo5 {
-            border: 2px solid #ff4655;
-            background: rgba(255, 70, 85, 0.08);
-        }
-        
-        .match.bo5::before {
-            content: "BO5";
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            background: #ff4655;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
-        }
-        
-        .match.bo3::before {
-            content: "BO3";
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            background: #2a3c56;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .team {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 8px;
-            border-bottom: 1px solid #2a3c56;
-            transition: all 0.2s ease;
-        }
-        
-        .team:hover {
-            background: rgba(255, 70, 85, 0.05);
-        }
-        
-        .team:last-child {
-            border-bottom: none;
-        }
-        
-        .seed {
-            background: #2a3c56;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            min-width: 25px;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .team-name {
-            flex-grow: 1;
-            margin-left: 12px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        
-        .score {
-            background: #2a3c56;
-            padding: 4px 10px;
-            border-radius: 5px;
-            min-width: 28px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .winner .score {
-            background: #ff4655;
-            box-shadow: 0 0 8px rgba(255, 70, 85, 0.4);
-        }
-        
-        .winner .team-name {
-            color: #ff4655;
-            font-weight: 600;
-        }
-        
-        .loser .team-name {
-            opacity: 0.6;
-        }
-        
-        .match-info {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 0.85rem;
-            color: #8b9bb4;
-            padding-top: 12px;
-            border-top: 1px dashed #2a3c56;
-        }
-        
-        .final-match-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(255, 70, 85, 0.1), rgba(255, 215, 0, 0.1));
-            border-radius: 8px;
-            border: 1px solid #ff4655;
-        }
+.page { position: relative; z-index: 1; }
 
-        .final-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
+/* ── HEADER ── */
+.hdr {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: stretch;
+  border-bottom: 1px solid var(--ln);
+  background: rgba(4,7,13,0.95);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 100;
+}
+.hdr::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--v) 20%, var(--cy) 50%, var(--v) 80%, transparent 100%);
+  opacity: 0.4;
+}
+.hdr-accent {
+  width: 5px;
+  background: linear-gradient(180deg, var(--v), var(--v2) 60%, transparent);
+  clip-path: polygon(0 0, 100% 5%, 100% 95%, 0 100%);
+}
+.hdr-center {
+  padding: 18px 32px 18px 24px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.hdr-eyebrow {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 5px; color: var(--v);
+  text-transform: uppercase; margin-bottom: 5px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hdr-eyebrow::before { content: ''; display: inline-block; width: 16px; height: 2px; background: var(--v); }
+.hdr-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.7rem; font-weight: 900; color: var(--t0);
+  text-transform: uppercase; letter-spacing: 2px; line-height: 1;
+}
+.hdr-title span { color: var(--v); }
+.hdr-sub { font-size: 0.75rem; color: var(--t2); margin-top: 6px; font-weight: 300; letter-spacing: 1px; }
+.hdr-meta {
+  display: flex; align-items: center;
+  padding: 0 28px; gap: 2px; border-left: 1px solid var(--ln);
+}
+.mp {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 12px 20px; border-right: 1px solid var(--ln); min-width: 90px; text-align: center;
+}
+.mp:last-child { border-right: none; }
+.mp-val { font-family: 'Orbitron', monospace; font-size: 0.95rem; font-weight: 700; color: var(--t0); white-space: nowrap; }
+.mp-lbl { font-size: 0.6rem; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
 
-        .chief-referee {
-            font-size: 0.9rem;
-            color: #8b9bb4;
-            font-weight: 500;
-        }
+/* ── CHAMPION HERO ── */
+.champion-hero {
+  margin: 24px 40px;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(255,193,7,0.25);
+  background: linear-gradient(135deg, rgba(15,8,0,0.9), rgba(4,7,13,0.95));
+}
+.ch-top-bar { height: 3px; background: linear-gradient(90deg, var(--go), var(--v), var(--go)); }
+.ch-inner { display: flex; align-items: center; }
+.ch-crown-col {
+  padding: 28px 36px;
+  display: flex; flex-direction: column; align-items: center;
+  border-right: 1px solid rgba(255,193,7,0.15);
+  background: rgba(255,193,7,0.04);
+}
+.ch-crown { font-size: 3.2rem; filter: drop-shadow(0 0 16px rgba(255,193,7,0.7)); animation: crownFloat 3s ease-in-out infinite; }
+@keyframes crownFloat { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-6px) rotate(2deg)} }
+.ch-crown-lbl { font-family: 'Orbitron', monospace; font-size: 0.55rem; letter-spacing: 3px; color: var(--go); margin-top: 8px; text-transform: uppercase; }
+.ch-info { flex: 1; padding: 24px 32px; }
+.ch-tag {
+  font-family: 'Orbitron', monospace; font-size: 0.58rem; letter-spacing: 4px; color: var(--go);
+  text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.ch-tag::after { content: ''; flex: 1; height: 1px; background: rgba(255,193,7,0.2); }
+.ch-team-name {
+  font-family: 'Orbitron', monospace; font-size: 2.2rem; font-weight: 900; color: var(--t0);
+  text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 30px rgba(255,193,7,0.3);
+}
+.ch-detail { font-size: 0.78rem; color: var(--t2); margin-top: 8px; font-weight: 300; }
+.ch-vs-col {
+  padding: 24px 32px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  border-left: 1px solid var(--ln);
+}
+.ch-score-wrap { display: flex; align-items: center; gap: 10px; }
+.ch-sc {
+  font-family: 'Orbitron', monospace; width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 1.8rem; font-weight: 900;
+}
+.ch-sc.w { background: var(--v); color: #fff; box-shadow: 0 0 20px rgba(255,70,85,0.4); }
+.ch-sc.l { background: var(--bg3); color: var(--t3); border: 1px solid var(--ln); }
+.ch-vs { font-family: 'Orbitron', monospace; font-size: 0.7rem; font-weight: 700; color: var(--t3); letter-spacing: 2px; }
+.ch-opponent { font-size: 0.8rem; color: var(--t2); font-weight: 300; text-align: center; margin-top: 4px; }
+.ch-logos {
+  padding: 24px 28px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; border-left: 1px solid var(--ln);
+}
+.ch-logos img { height: 38px; width: auto; opacity: 0.8; transition: opacity 0.2s; }
+.ch-logos a:hover img { opacity: 1; }
 
-        .finals-section {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .final-match {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .trophy {
-            text-align: center;
-            margin-top: 40px;
-            position: relative;
-        }
-        
-        .trophy-icon {
-            font-size: 4rem;
-            color: #ffd700;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-            animation: glow 2s infinite alternate;
-        }
-        
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-            }
-            to {
-                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
-            }
-        }
-        
-        .tournament-name {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #fff;
-            margin-top: 15px;
-            text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
-        }
-        
-        .logo {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-        
-        .logo:hover {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-        
-        .logo img {
-            height: 50px;
-        }
-        
-        .valorant-pattern {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            opacity: 0.03;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" fill="white"/></svg>');
-            background-size: 30px 30px;
-            z-index: -1;
-        }
-        
-        .round-title {
-            font-size: 1.1rem;
-            color: #8b9bb4;
-            text-align: center;
-            margin: 10px 0;
-            font-weight: 500;
-            width: 100%;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @media (max-width: 1600px) {
-            .bracket-column {
-                min-width: 280px;
-            }
-            .match {
-                width: 270px;
-            }
-        }
-        
-        @media (max-width: 1200px) {
-            .bracket-column {
-                min-width: 260px;
-            }
-            .match {
-                width: 260px;
-            }
-            h1 {
-                font-size: 2.5rem;
-            }
-        }
-        
-        ::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 20, 42, 0.5);
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #ff4655;
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ff002b;
-        }
+/* ── CONTENT ── */
+.content { padding: 0 40px 60px; }
 
-        /* Разделитель с текстом */
-        .section-divider {
-            position: relative;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #ff4655, transparent);
-            margin: 50px 0;
-            text-align: center;
-            overflow: visible;
-        }
+/* ── ZONE HEADER ── */
+.zone-header { display: flex; align-items: center; gap: 16px; margin: 36px 0 20px; }
+.zh-slash { width: 4px; height: 28px; clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%); }
+.zh-slash.upper { background: var(--v); }
+.zh-slash.lower { background: var(--cy); }
+.zh-text { font-family: 'Orbitron', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; }
+.zh-text.upper { color: var(--v); }
+.zh-text.lower { color: var(--cy); }
+.zh-line { flex: 1; height: 1px; }
+.zh-line.upper { background: linear-gradient(90deg, rgba(255,70,85,0.4), transparent); }
+.zh-line.lower { background: linear-gradient(90deg, rgba(0,229,255,0.3), transparent); }
 
-        .section-divider::before {
-            content: attr(data-text);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #0f1923;
-            padding: 8px 18px;
-            color: #ff4655;
-            font-weight: bold;
-            font-size: 1.2rem;
-            font-family: 'Montserrat', sans-serif;
-            border: 1px solid #ff4655;
-            border-radius: 30px;
-            box-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
-            white-space: nowrap;
-            z-index: 10;
-        }
+/* ── BRACKET PANEL ── */
+.bracket-panel {
+  border-radius: 10px; border: 1px solid var(--ln); overflow: hidden;
+}
+.bracket-panel.upper-panel {
+  border-top: 2px solid rgba(255,70,85,0.4);
+  background: rgba(11,18,32,0.7);
+}
+.bracket-panel.lower-panel {
+  border-top: 2px solid rgba(0,229,255,0.3);
+  background: rgba(7,14,22,0.7);
+}
 
-        .bracket-section {
-            margin-bottom: 60px;
-            background: rgba(19, 33, 53, 0.3);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #2a3c56;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        /* Стили для матча в процессе */
-        .team.live {
-            background: rgba(255, 215, 0, 0.1);
-            border-left: 3px solid #ffd700;
-            position: relative;
-        }
+.bracket-scroll {
+  overflow-x: auto; cursor: grab; padding: 28px 24px 24px; position: relative;
+}
+.bracket-scroll:active { cursor: grabbing; }
+.bracket-scroll::-webkit-scrollbar { height: 3px; }
+.bracket-scroll::-webkit-scrollbar-track { background: var(--bg2); }
+.bracket-scroll::-webkit-scrollbar-thumb { background: var(--v); border-radius: 2px; }
+.lower-panel .bracket-scroll::-webkit-scrollbar-thumb { background: var(--cy); }
 
-        .team.live::before {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background: #ffd700;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
+/* The SVG connector layer sits behind cards */
+.bracket-svg {
+  position: absolute; top: 0; left: 0;
+  pointer-events: none; overflow: visible;
+}
 
-        .live-indicator {
-            color: #ffd700;
-            font-weight: 600;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
+/* bracket-row: relative so SVG can overlay */
+.bracket-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  width: max-content;
+  position: relative;
+  /* padding-top so SVG has room */
+  padding-top: 30px;
+}
 
-        .match.live {
-            border: 2px solid #ffd700;
-            background: rgba(255, 215, 0, 0.05);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
+/* ── COLUMN ── */
+.col {
+  display: flex; flex-direction: column;
+  width: var(--cw);
+  flex-shrink: 0;
+  position: relative;
+}
 
-        /* Анимация пульсации для LIVE */
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
+.col-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.58rem; font-weight: 600; letter-spacing: 3px; color: var(--t3);
+  text-transform: uppercase; text-align: center;
+  padding-bottom: 12px; border-bottom: 1px solid var(--ln); margin-bottom: 0;
+  position: absolute; top: -30px; left: 0; right: 0;
+}
 
-        /* Дополнительные стили для разных состояний */
-        .team.upcoming {
-            background: rgba(139, 155, 180, 0.1);
-            border-left: 3px solid #8b9bb4;
-        }
+/* Slot: fixed height cell that centres a card */
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .team.upcoming .team-name {
-            color: #8b9bb4;
-            font-style: italic;
-        }
+/* ── MATCH CARD ── */
+.mc {
+  width: var(--cw);
+  border-radius: 8px; border: 1px solid var(--ln);
+  background: var(--bg2); overflow: hidden; position: relative;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  flex-shrink: 0;
+}
+.mc:hover { border-color: var(--ln2); box-shadow: 0 6px 28px rgba(0,0,0,0.5); transform: translateY(-2px); }
+.mc::before {
+  content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ln2), transparent);
+  transition: background 0.25s, left 0.25s, right 0.25s;
+}
+.mc:hover::before { left: 0; right: 0; background: linear-gradient(90deg, transparent, var(--v) 50%, transparent); }
+.lower-panel .mc:hover::before { background: linear-gradient(90deg, transparent, var(--cy) 50%, transparent); }
 
-        .match.upcoming {
-            opacity: 0.7;
-            border: 1px dashed #2a3c56;
-        }
-    </style>
+/* bo badge */
+.mc .bo {
+  position: absolute; top: 0; right: 10px;
+  padding: 2px 8px; border-radius: 0 0 5px 5px;
+  font-family: 'Orbitron', monospace; font-size: 0.58rem; font-weight: 700; letter-spacing: 1px;
+  background: var(--bg3); color: var(--t3); border: 1px solid var(--ln); border-top: none;
+}
+.mc.bo5-card .bo { background: rgba(255,70,85,0.15); color: var(--v); border-color: rgba(255,70,85,0.3); }
+.mc.gf-card   .bo { background: rgba(255,193,7,0.15);  color: var(--go); border-color: rgba(255,193,7,0.3); }
+
+.mc-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 11px 7px; border-bottom: 1px solid var(--ln);
+}
+.mc-id { font-family: 'Orbitron', monospace; font-size: 0.62rem; font-weight: 700; color: var(--v); letter-spacing: 1px; }
+.lower-panel .mc-id { color: var(--cy); }
+.mc-ref { font-size: 0.62rem; color: var(--t3); font-weight: 300; }
+
+.tr { display: flex; align-items: stretch; border-bottom: 1px solid var(--ln); min-height: 42px; }
+.tr:last-of-type { border-bottom: none; }
+.tr-bar { width: 2px; flex-shrink: 0; align-self: stretch; }
+.tr.w .tr-bar { background: var(--v); }
+.lower-panel .tr.w .tr-bar { background: var(--cy); }
+.mc.gf-card .tr.w .tr-bar { background: var(--go) !important; }
+.tr.l .tr-bar { background: transparent; }
+.tr-name {
+  flex: 1; padding: 0 10px; display: flex; align-items: center;
+  font-size: 0.83rem; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.tr.w .tr-name { color: var(--t0); }
+.tr.l .tr-name { color: var(--t3); }
+.tr-score {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 12px; border-left: 1px solid var(--ln); min-width: 40px;
+  font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 700;
+}
+.tr.w .tr-score { color: var(--v); background: rgba(255,70,85,0.06); }
+.lower-panel .tr.w .tr-score { color: var(--cy); background: rgba(0,229,255,0.06); }
+.mc.gf-card .tr.w .tr-score { color: var(--go) !important; background: rgba(255,193,7,0.06) !important; }
+.tr.l .tr-score { color: var(--t3); }
+.tr-score.tp { font-size: 0.6rem; letter-spacing: 1px; }
+
+.mc-date {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 11px; font-size: 0.67rem; color: var(--t3);
+  background: rgba(0,0,0,0.2); border-top: 1px solid var(--ln);
+}
+.mc-date::before { content: '◈'; font-size: 0.5rem; color: var(--t3); }
+
+.mc.bo5-card { border-color: rgba(255,70,85,0.25); background: rgba(255,70,85,0.03); }
+.mc.gf-card  { border-color: rgba(255,193,7,0.3);  background: rgba(255,193,7,0.03); }
+.mc.gf-card:hover { border-color: rgba(255,193,7,0.5); box-shadow: 0 8px 40px rgba(255,193,7,0.15); }
+.mc.gf-card::before { background: linear-gradient(90deg, transparent, rgba(255,193,7,0.5) 50%, transparent) !important; }
+
+/* ── FINALS ── */
+.finals-zone { margin: 36px 0 0; }
+.finals-grid {
+  display: flex; justify-content: center; align-items: flex-start;
+  gap: 40px; flex-wrap: wrap; padding: 28px 20px;
+  background: rgba(7,14,22,0.6); border: 1px solid var(--ln); border-radius: 10px;
+  border-top: 2px solid rgba(255,193,7,0.3); position: relative; overflow: hidden;
+}
+.finals-grid::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(255,193,7,0.04), transparent);
+  pointer-events: none;
+}
+.fblock { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.fblock-label {
+  font-family: 'Orbitron', monospace; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--t2);
+}
+.fblock-label.gold { color: var(--go); }
+
+/* ── FOOTER ── */
+.site-footer {
+  border-top: 1px solid var(--ln); padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  background: rgba(4,7,13,0.9); position: relative;
+}
+.site-footer::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--v) 30%, var(--cy) 70%, transparent); opacity: 0.3;
+}
+.ft-left { font-size: 0.78rem; color: var(--t2); }
+.ft-left strong { color: var(--t1); font-weight: 600; }
+.ft-right { display: flex; align-items: center; gap: 20px; }
+.ft-right a { display: flex; }
+.ft-right img { height: 32px; width: auto; opacity: 0.65; transition: opacity 0.2s, transform 0.2s; }
+.ft-right a:hover img { opacity: 1; transform: scale(1.06); }
+
+@media(max-width:900px){
+  .hdr { grid-template-columns: auto 1fr; }
+  .hdr-meta { display: none; }
+  .champion-hero { margin: 16px; }
+  .content { padding: 0 16px 40px; }
+  .ch-logos { display: none; }
+}
+</style>
 </head>
 <body>
-    <div class="valorant-pattern"></div>
-    <div class="container">
 
-        <!-- Заголовок -->
-        <header>
-            <h1>СТУДЕНЧЕСКИЙ КИБЕР-БАТТЛ | Кубок ЛАНИТ 2025</h1>
-            <p class="subtitle">16 команд | Double Elimination | Все матчи BO3 кроме Финала</p>
-            <div class="tournament-info">
-                <div class="info-item"><span>📅</span> 11 - 18 Октября 2025</div>
-                <div class="info-item"><span><img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/VLR_100X100.png" alt="LANIT Logo" style="width: 25px; height: auto;"></span> Valorant</div>
-                <div class="info-item"><span>🏆</span> Призовой фонд: 200 000 ₽</div>
-            </div>
-        </header>
+<div class="bg-fx"></div>
+<div class="scanlines"></div>
+<div class="deco-slash"></div>
 
-        <!-- Верхняя сетка -->
-        <div class="bracket-section">
-            <div class="section-divider" data-text="ВЕРХНЯЯ СЕТКА"></div>
+<div class="page">
 
-            <div class="brackets-container">
-                <div class="upper-bracket">
-                    <!-- Раунд 1 -->
-                    <div class="bracket-column">
-                    <div class="round-title">Раунд 1 (1/8 финала)</div>
-
-                    
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #1</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">СПБГТИ(ТУ)2</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">РТУ МИРЭА-1</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">11 Октября 17:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #2</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">KFU-2</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">Black Bears</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">11 Октября 17:00 | </div>
-                    </div>
-
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #3</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">СТАНКИН-2</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">TxT</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">13 Октября 20:00 | </div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #4</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">KronBars Jr</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">ZVAL</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">11 Октября 18:00 | </div>
-                    </div>
-
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #5</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">OZON_FRECH</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">KronBars</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">12 Октября 17:00 | </div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #6</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">p0d1ck and friends</div><div class="score">1</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">CyberSPBU</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">11 Октября 15:45 | </div>
-                    </div>
-
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #7</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">TrainX</div><div class="score">1</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">КФУ-1</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">11 Октября 20:00 | </div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #8</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">СТТОРСТСМЕНbI</div><div class="score">2</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">UrPOKU</div><div class="score">1</div>
-                        </div>
-                        <div class="match-info">11 Октября 20:00 | </div>
-                    </div>
-                    </div>
-
-                    <!-- Раунд 2 -->
-                    <div class="bracket-column" style="margin-top: 528px;">
-                    <div class="round-title">Раунд 2 (1/4 финала)</div>
-                    
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #13</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">РТУ МИРЭА-1</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">Black Bears</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">12 Октября 17:00 | </div>
-                    </div>
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #14</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">TxT</div><div class="score">2</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">ZVAL</div><div class="score">1</div>
-                        </div>
-                        <div class="match-info"> 14 Октября 21:00 | </div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #15</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">KronBars</div><div class="score">2</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">CyberSPBU</div><div class="score">1</div>
-                        </div>
-                        <div class="match-info"> 12 Октября 19:15 | </div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #16</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">КФУ-1</div><div class="score">2</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">СТТОРСТСМЕНbI</div><div class="score">0</div>
-                        </div>
-                        <div class="match-info">12 Октября 18:00 | </div>
-                    </div>
-                    </div>
-
-                    <!-- Раунд 3 -->
-                    <div class="bracket-column" style="margin-top: 792px;">
-                    <div class="round-title">Раунд 3 (1/2 финала)</div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #21</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">Black Bears</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">TxT</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">15 Октября в 21:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #22</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">KronBars</div><div class="score">2</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">КФУ-1</div><div class="score">0</div>
-                        </div>
-                        <div class="match-info">13 Октября 20:00 | </div>
-                    </div>
-                    </div>
-
-                    <!-- Финал верхней сетки -->
-                    <div class="bracket-column" style="margin-top: 925px;">
-                    <div class="round-title">Финал верхней сетки</div>
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #25</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">TxT</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">KronBars</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">16 Октября 21:00  |</div>
-                    </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>      
-
-            <!-- Нижняя сетка -->
-        <div class="bracket-section">
-            <div class="section-divider" data-text="НИЖНЯЯ СЕТКА"></div>
-
-            <div class="lower-bracket">
-                <!-- Раунд 1 нижней сетки -->
-                <div class="bracket-column">
-                    <div class="round-title">Раунд 1</div>
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #9</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">СПБГТИ(ТУ)2</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">KFU-2</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">12 Октября 20:00 | </div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #10</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">СТАНКИН-2</div><div class="score">ТП</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">KronBars Jr</div><div class="score">0</div>
-                        </div>
-                        <div class="match-info"> 15 Октября 18:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #11</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">OZON_FRECH</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">p0d1ck and friends</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info"> 13 Октября 20:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #12</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">TrainX</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">UrPOKU</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">12 Октября 20:00 |</div>
-                    </div>
-                </div>
-
-                <!-- Раунд 2 нижней сетки -->
-                <div class="bracket-column">
-                    <div class="round-title">Раунд 2</div>
-
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #17</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">KFU-2</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">СТТОРСТСМЕНbI</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">13 Октября 20:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #18</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">KronBars Jr</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">CyberSPBU</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">15 Октября 20:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #19</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">p0d1ck and friends</div><div class="score">0</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">ZVAL</div><div class="score">ТП</div>
-                        </div>
-                        <div class="match-info">15 Октября 21:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #20</span>
-                            <span class="match-referee">Судья: @Akiakane</span>
-                        </div>
-                        <div class="team winner"><div class="team-name">UrPOKU</div><div class="score">2</div>
-                        </div>
-                        <div class="team loser"><div class="team-name">РТУ МИРЭА-1</div><div class="score">1</div>
-                        </div>
-                        <div class="match-info">13 Октября 20:00 |</div>
-                    </div>
-                </div>
-
-                <!-- Раунд 3 нижней сетки -->
-                <div class="bracket-column" style="margin-top: 264px;">
-                    <div class="round-title">Раунд 3</div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #23</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">СТТОРСТСМЕНbI</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">CyberSPBU</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">15 Октября в 21:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #24</span>
-                            <span class="match-referee">Судья: @Yurislavsky</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">p0d1ck and friends</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">UrPOKU</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">16 Октября 20:00 |</div>
-                    </div>
-                </div>
-
-                <!-- Раунд 4 нижней сетки -->
-                <div class="bracket-column" style="margin-top: 264px;">
-                    <div class="round-title">Раунд 4</div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #26</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">CyberSPBU</div><div class="score">1</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">КФУ-1</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">17 Октября 20:00 |</div>
-                    </div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #27</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">UrPOKU</div><div class="score">1</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">Black Bears</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">17 Октября 20:00 |</div>
-                    </div>
-                </div>
-
-                <!-- Раунд 5 -->
-                <div class="bracket-column" style="margin-top: 400px;">
-                    <div class="round-title">Раунд 5</div>
-                    <div class="match bo3">
-                        <div class="match-header">
-                            <span class="match-number">Матч #28</span>
-                            <span class="match-referee">Судья: @rustem9097</span>
-                        </div>
-                        <div class="team loser"><div class="team-name">КФУ-1</div><div class="score">0</div>
-                        </div>
-                        <div class="team winner"><div class="team-name">Black Bears</div><div class="score">2</div>
-                        </div>
-                        <div class="match-info">17 Октября 23:00  |</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Гранд-финал -->                            
-        <div class="section-divider" data-text="ГРАНД-ФИНАЛ"></div>
-
-        <div class="finals-section">
-    <!-- Матч за 3 место -->
-    <div class="third-place-match">
-        <div class="bracket-column">
-            <div class="match bo3">
-                <div class="match-header">
-                    <span class="match-number">Матч за 3-место</span>
-                    <span class="match-referee">Судья: @Akiakane</span>
-                </div>
-                <div class="team winner"><div class="team-name">Black Bears</div><div class="score">2</div>
-                </div>
-                <div class="team loser"><div class="team-name">TxT</div><div class="score">1</div>
-                </div>
-                <div class="match-info">18 Октября 14:00 |</div>
-            </div>
-        </div>
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-accent"></div>
+  <div class="hdr-center">
+    <div class="hdr-eyebrow">Double Elimination · Valorant</div>
+    <div class="hdr-title">КУБОК <span>ЛАНИТ</span> 2025</div>
+    <div class="hdr-sub">СТУДЕНЧЕСКИЙ КИБЕР-БАТТЛ &nbsp;/&nbsp; 16 команд &nbsp;/&nbsp; Все матчи BO3, финал BO5</div>
+  </div>
+  <div class="hdr-meta">
+    <div class="mp">
+      <div class="mp-val">
+        <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/VLR_100X100.png" alt="VAL" style="width:22px;vertical-align:middle;margin-right:4px;">VAL
+      </div>
+      <div class="mp-lbl">Игра</div>
     </div>
+    <div class="mp"><div class="mp-val">11–18 ОКТ</div><div class="mp-lbl">Даты</div></div>
+    <div class="mp"><div class="mp-val">200 000 ₽</div><div class="mp-lbl">Призы</div></div>
+    <div class="mp">
+      <a href="https://t.me/+yVAWx0vUVHQ2ZjBi" target="_blank" rel="noopener" style="text-decoration:none;">
+        <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/Logo-tg%20%D0%B1%D0%B5%D0%B7%20%D1%84%D0%BE%D0%BD%D0%B0.png" alt="TG" style="height:36px;width:auto;opacity:0.8;">
+      </a>
+    </div>
+  </div>
+</header>
 
-    <!-- Гранд-финал -->
-    <div class="grand-final-match">
-        <div class="final-match">
-            <div class="match bo5 grand-final">
-                <div class="match-header">
-                    <span class="match-number">ФИНАЛ</span>
-                    <span class="match-referee">Судья: @Akiakane</span>
-                </div>
-                <div class="team winner"><div class="team-name">KronBars</div><div class="score">3</div>
-                </div>
-                <div class="team loser"><div class="team-name">Black Bears</div><div class="score">1</div>
-                </div>
-                <div class="match-info">18 Октября 18:00 |</div>
-            </div>
-        </div>
+<!-- CHAMPION -->
+<div class="champion-hero">
+  <div class="ch-top-bar"></div>
+  <div class="ch-inner">
+    <div class="ch-crown-col"><div class="ch-crown">👑</div><div class="ch-crown-lbl">Чемпион</div></div>
+    <div class="ch-info">
+      <div class="ch-tag">Победитель турнира</div>
+      <div class="ch-team-name">KronBars</div>
+      <div class="ch-detail">Гранд-финал · BO5 · 18 Октября 18:00 · Судья: @Akiakane</div>
     </div>
-</div>
-<div class="trophy">
-    <div class="trophy-icon">
-        <a href="https://t.me/+yVAWx0vUVHQ2ZjBi" target="_blank" rel="noopener noreferrer" class="logo-link">
-            <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/Logo-tg%20%D0%B1%D0%B5%D0%B7%20%D1%84%D0%BE%D0%BD%D0%B0.png" alt="WK Logo" style="width: 150px; height: auto;">
-        </a>
+    <div class="ch-vs-col">
+      <div class="ch-score-wrap">
+        <div class="ch-sc w">3</div><div class="ch-vs">VS</div><div class="ch-sc l">1</div>
+      </div>
+      <div class="ch-opponent">Black Bears</div>
     </div>
-    <div class="tournament-name">СТУДЕНЧЕСКИЙ КИБЕР-БАТТЛ | Кубок ЛАНИТ 2025</div>
+    <div class="ch-logos">
+      <a href="https://lanit.ru/" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/%D0%9B%D0%90%D0%9D%D0%98%D0%A2.png" alt="LANIT"></a>
+      <a href="https://t.me/+yVAWx0vUVHQ2ZjBi" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/Logo-tg%20%D0%B1%D0%B5%D0%B7%20%D1%84%D0%BE%D0%BD%D0%B0.png" alt="TG"></a>
+    </div>
+  </div>
 </div>
 
-        <!-- Логотип с ссылкой -->
-        <div class="logo">
-            <a href="https://lanit.ru/" target="_blank" rel="noopener noreferrer">
-                <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/%D0%9B%D0%90%D0%9D%D0%98%D0%A2.png" alt="LANIT Logo" style="width: 100px; height: auto;">
-            </a>
+<div class="content">
+
+<!-- ═══════════ ВЕРХНЯЯ СЕТКА ═══════════ -->
+<div class="zone-header">
+  <div class="zh-slash upper"></div>
+  <div class="zh-text upper">Верхняя сетка</div>
+  <div class="zh-line upper"></div>
+</div>
+
+<div class="bracket-panel upper-panel">
+  <div class="bracket-scroll" id="upper-scroll">
+    <div class="bracket-row" id="upper-row">
+      <svg class="bracket-svg" id="upper-svg"></svg>
+
+      <!-- UB COL 0: R1 (8 матчей) -->
+      <div class="col" data-col="0" data-label="Раунд 1 · 1/8">
+        <div class="col-label">Раунд 1 · 1/8</div>
+
+        <div class="slot" data-slot="0-0">
+          <div class="mc" data-id="ub-0-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #1</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">СПБГТИ(ТУ)2</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">РТУ МИРЭА-1</div><div class="tr-score">2</div></div>
+            <div class="mc-date">11 Окт 17:00</div>
+          </div>
         </div>
 
-    <script>
+        <div class="slot" data-slot="0-1">
+          <div class="mc" data-id="ub-0-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #2</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">KFU-2</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">Black Bears</div><div class="tr-score">2</div></div>
+            <div class="mc-date">11 Окт 17:00</div>
+          </div>
+        </div>
 
+        <div class="slot" data-slot="0-2">
+          <div class="mc" data-id="ub-0-2"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #3</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">СТАНКИН-2</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">TxT</div><div class="tr-score">2</div></div>
+            <div class="mc-date">13 Окт 20:00</div>
+          </div>
+        </div>
 
-        // Функция для обновления LIVE матчей
-        function updateLiveMatches() {
-            document.querySelectorAll('.match.live').forEach(match => {
-                // Обновление таймера
-                const timer = match.querySelector('.match-timer');
-                if (timer) {
-                    // Логика обновления таймера
-                }
+        <div class="slot" data-slot="0-3">
+          <div class="mc" data-id="ub-0-3"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #4</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">KronBars Jr</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">ZVAL</div><div class="tr-score">2</div></div>
+            <div class="mc-date">11 Окт 18:00</div>
+          </div>
+        </div>
 
-                // Обновление счета карты
-                const mapScores = match.querySelectorAll('.map-score');
-                // Логика обновления счета
-            });
-        }
+        <div class="slot" data-slot="0-4">
+          <div class="mc" data-id="ub-0-4"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #5</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">OZON_FRECH</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KronBars</div><div class="tr-score">2</div></div>
+            <div class="mc-date">12 Окт 17:00</div>
+          </div>
+        </div>
 
-        // Обновление каждые 5 секунд
-        setInterval(updateLiveMatches, 5000);
+        <div class="slot" data-slot="0-5">
+          <div class="mc" data-id="ub-0-5"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #6</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">p0d1ck and friends</div><div class="tr-score">1</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">CyberSPBU</div><div class="tr-score">2</div></div>
+            <div class="mc-date">11 Окт 15:45</div>
+          </div>
+        </div>
 
-        // Пульсация финала
-        document.querySelectorAll('.finals-section .match').forEach(match => {
-            match.classList.add('pulse');
-        });
+        <div class="slot" data-slot="0-6">
+          <div class="mc" data-id="ub-0-6"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #7</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">TrainX</div><div class="tr-score">1</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">КФУ-1</div><div class="tr-score">2</div></div>
+            <div class="mc-date">11 Окт 20:00</div>
+          </div>
+        </div>
 
-        // Перетаскивание
-        document.querySelectorAll('.upper-bracket, .lower-bracket').forEach(bracket => {
-            let isDragging = false;
-            let startX;
-            let scrollLeft;
+        <div class="slot" data-slot="0-7">
+          <div class="mc" data-id="ub-0-7"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #8</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">СТТОРСТСМЕНbI</div><div class="tr-score">2</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">UrPOKU</div><div class="tr-score">1</div></div>
+            <div class="mc-date">11 Окт 20:00</div>
+          </div>
+        </div>
+      </div>
 
-            bracket.addEventListener('mousedown', e => {
-                isDragging = true;
-                startX = e.pageX - bracket.offsetLeft;
-                scrollLeft = bracket.scrollLeft;
-                bracket.style.cursor = 'grabbing';
-            });
+      <!-- UB COL 1: R2 (4 матча) -->
+      <div class="col" data-col="1" data-label="Раунд 2 · 1/4">
+        <div class="col-label">Раунд 2 · 1/4</div>
 
-            bracket.addEventListener('mousemove', e => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.pageX - bracket.offsetLeft;
-                const walk = (x - startX) * 2;
-                bracket.scrollLeft = scrollLeft - walk;
-            });
+        <div class="slot" data-slot="1-0" data-from="0-0,0-1">
+          <div class="mc" data-id="ub-1-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #13</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">РТУ МИРЭА-1</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">Black Bears</div><div class="tr-score">2</div></div>
+            <div class="mc-date">12 Окт 17:00</div>
+          </div>
+        </div>
 
-            ['mouseup', 'mouseleave'].forEach(event => {
-                bracket.addEventListener(event, () => {
-                    isDragging = false;
-                    bracket.style.cursor = 'grab';
-                });
-            });
-        });
-    </script>
+        <div class="slot" data-slot="1-1" data-from="0-2,0-3">
+          <div class="mc" data-id="ub-1-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #14</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">TxT</div><div class="tr-score">2</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">ZVAL</div><div class="tr-score">1</div></div>
+            <div class="mc-date">14 Окт 21:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="1-2" data-from="0-4,0-5">
+          <div class="mc" data-id="ub-1-2"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #15</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KronBars</div><div class="tr-score">2</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">CyberSPBU</div><div class="tr-score">1</div></div>
+            <div class="mc-date">12 Окт 19:15</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="1-3" data-from="0-6,0-7">
+          <div class="mc" data-id="ub-1-3"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #16</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">КФУ-1</div><div class="tr-score">2</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">СТТОРСТСМЕНbI</div><div class="tr-score">0</div></div>
+            <div class="mc-date">12 Окт 18:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UB COL 2: R3 (2 матча) -->
+      <div class="col" data-col="2" data-label="Раунд 3 · 1/2">
+        <div class="col-label">Раунд 3 · 1/2</div>
+
+        <div class="slot" data-slot="2-0" data-from="1-0,1-1">
+          <div class="mc" data-id="ub-2-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #21</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">Black Bears</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">TxT</div><div class="tr-score">2</div></div>
+            <div class="mc-date">15 Окт 21:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="2-1" data-from="1-2,1-3">
+          <div class="mc" data-id="ub-2-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #22</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KronBars</div><div class="tr-score">2</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">КФУ-1</div><div class="tr-score">0</div></div>
+            <div class="mc-date">13 Окт 20:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UB COL 3: Финал верхней (1 матч) -->
+      <div class="col" data-col="3" data-label="Финал верхней">
+        <div class="col-label">Финал верхней</div>
+
+        <div class="slot" data-slot="3-0" data-from="2-0,2-1">
+          <div class="mc bo5-card" data-id="ub-3-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #25</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">TxT</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KronBars</div><div class="tr-score">2</div></div>
+            <div class="mc-date">16 Окт 21:00</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /bracket-row upper -->
+  </div>
+</div>
+
+<!-- ═══════════ НИЖНЯЯ СЕТКА ═══════════ -->
+<div class="zone-header">
+  <div class="zh-slash lower"></div>
+  <div class="zh-text lower">Нижняя сетка</div>
+  <div class="zh-line lower"></div>
+</div>
+
+<div class="bracket-panel lower-panel">
+  <div class="bracket-scroll" id="lower-scroll">
+    <div class="bracket-row" id="lower-row">
+      <svg class="bracket-svg" id="lower-svg"></svg>
+
+      <!-- LB COL 0: R1 (4 матча) -->
+      <div class="col" data-col="0" data-label="Раунд 1">
+        <div class="col-label">Раунд 1</div>
+
+        <div class="slot" data-slot="0-0">
+          <div class="mc" data-id="lb-0-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #9</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">СПБГТИ(ТУ)2</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KFU-2</div><div class="tr-score">2</div></div>
+            <div class="mc-date">12 Окт 20:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="0-1">
+          <div class="mc" data-id="lb-0-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #10</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">СТАНКИН-2</div><div class="tr-score tp">ТП</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KronBars Jr</div><div class="tr-score">0</div></div>
+            <div class="mc-date">15 Окт 18:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="0-2">
+          <div class="mc" data-id="lb-0-2"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #11</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">OZON_FRECH</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">p0d1ck and friends</div><div class="tr-score">2</div></div>
+            <div class="mc-date">13 Окт 20:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="0-3">
+          <div class="mc" data-id="lb-0-3"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #12</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">TrainX</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">UrPOKU</div><div class="tr-score">2</div></div>
+            <div class="mc-date">12 Окт 20:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LB COL 1: R2 (4 матча — без слияния) -->
+      <div class="col" data-col="1" data-label="Раунд 2">
+        <div class="col-label">Раунд 2</div>
+
+        <div class="slot" data-slot="1-0" data-from="0-0">
+          <div class="mc" data-id="lb-1-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #17</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">KFU-2</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">СТТОРСТСМЕНbI</div><div class="tr-score">2</div></div>
+            <div class="mc-date">13 Окт 20:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="1-1" data-from="0-1">
+          <div class="mc" data-id="lb-1-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #18</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">KronBars Jr</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">CyberSPBU</div><div class="tr-score">2</div></div>
+            <div class="mc-date">15 Окт 20:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="1-2" data-from="0-2">
+          <div class="mc" data-id="lb-1-2"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #19</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">p0d1ck and friends</div><div class="tr-score">0</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">ZVAL</div><div class="tr-score tp">ТП</div></div>
+            <div class="mc-date">15 Окт 21:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="1-3" data-from="0-3">
+          <div class="mc" data-id="lb-1-3"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #20</span><span class="mc-ref">@Akiakane</span></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">UrPOKU</div><div class="tr-score">2</div></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">РТУ МИРЭА-1</div><div class="tr-score">1</div></div>
+            <div class="mc-date">13 Окт 20:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LB COL 2: R3 (2 матча — слияние пар) -->
+      <div class="col" data-col="2" data-label="Раунд 3">
+        <div class="col-label">Раунд 3</div>
+
+        <div class="slot" data-slot="2-0" data-from="1-0,1-1">
+          <div class="mc" data-id="lb-2-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #23</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">СТТОРСТСМЕНbI</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">CyberSPBU</div><div class="tr-score">2</div></div>
+            <div class="mc-date">15 Окт 21:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="2-1" data-from="1-2,1-3">
+          <div class="mc" data-id="lb-2-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #24</span><span class="mc-ref">@Yurislavsky</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">p0d1ck and friends</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">UrPOKU</div><div class="tr-score">2</div></div>
+            <div class="mc-date">16 Окт 20:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LB COL 3: R4 (2 матча) -->
+      <div class="col" data-col="3" data-label="Раунд 4">
+        <div class="col-label">Раунд 4</div>
+
+        <div class="slot" data-slot="3-0" data-from="2-0">
+          <div class="mc" data-id="lb-3-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #26</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">CyberSPBU</div><div class="tr-score">1</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">КФУ-1</div><div class="tr-score">2</div></div>
+            <div class="mc-date">17 Окт 20:00</div>
+          </div>
+        </div>
+
+        <div class="slot" data-slot="3-1" data-from="2-1">
+          <div class="mc" data-id="lb-3-1"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #27</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">UrPOKU</div><div class="tr-score">1</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">Black Bears</div><div class="tr-score">2</div></div>
+            <div class="mc-date">17 Окт 20:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LB COL 4: R5 (1 матч) -->
+      <div class="col" data-col="4" data-label="Раунд 5">
+        <div class="col-label">Раунд 5</div>
+
+        <div class="slot" data-slot="4-0" data-from="3-0,3-1">
+          <div class="mc" data-id="lb-4-0"><div class="bo">BO3</div>
+            <div class="mc-head"><span class="mc-id">МАТЧ #28</span><span class="mc-ref">@rustem9097</span></div>
+            <div class="tr l"><div class="tr-bar"></div><div class="tr-name">КФУ-1</div><div class="tr-score">0</div></div>
+            <div class="tr w"><div class="tr-bar"></div><div class="tr-name">Black Bears</div><div class="tr-score">2</div></div>
+            <div class="mc-date">17 Окт 23:00</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /bracket-row lower -->
+  </div>
+</div>
+
+<!-- ═══════════ ФИНАЛЫ ═══════════ -->
+<div class="zone-header">
+  <div class="zh-slash" style="background:var(--go);"></div>
+  <div class="zh-text" style="color:var(--go);">Финальный этап</div>
+  <div class="zh-line" style="background:linear-gradient(90deg, rgba(255,193,7,0.4), transparent);"></div>
+</div>
+
+<div class="finals-zone">
+  <div class="finals-grid">
+
+    <div class="fblock">
+      <div class="fblock-label">🥉 Матч за 3-е место</div>
+      <div class="mc" style="--cw:300px; width:300px;">
+        <div class="bo">BO3</div>
+        <div class="mc-head"><span class="mc-id" style="color:var(--cy);">3-Е МЕСТО</span><span class="mc-ref">@Akiakane</span></div>
+        <div class="tr w"><div class="tr-bar" style="background:var(--cy);"></div><div class="tr-name">Black Bears</div><div class="tr-score" style="color:var(--cy);background:rgba(0,229,255,0.06);">2</div></div>
+        <div class="tr l"><div class="tr-bar"></div><div class="tr-name">TxT</div><div class="tr-score">1</div></div>
+        <div class="mc-date">18 Окт 14:00</div>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fblock-label gold">🏆 Гранд-Финал</div>
+      <div class="mc gf-card" style="--cw:320px; width:320px;">
+        <div class="bo">BO5</div>
+        <div class="mc-head"><span class="mc-id" style="color:var(--go);">ГРАНД-ФИНАЛ</span><span class="mc-ref">@Akiakane</span></div>
+        <div class="tr w"><div class="tr-bar"></div><div class="tr-name">KronBars 👑</div><div class="tr-score">3</div></div>
+        <div class="tr l"><div class="tr-bar"></div><div class="tr-name">Black Bears</div><div class="tr-score">1</div></div>
+        <div class="mc-date">18 Окт 18:00</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<footer class="site-footer">
+  <div class="ft-left">
+    <strong>СТУДЕНЧЕСКИЙ КИБЕР-БАТТЛ</strong> · Кубок ЛАНИТ 2025<br>
+    <span style="font-size:0.7rem;">Valorant · 16 команд · Double Elimination · 11–18 Октября</span>
+  </div>
+  <div class="ft-right">
+    <a href="https://t.me/+yVAWx0vUVHQ2ZjBi" target="_blank" rel="noopener">
+      <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/Logo-tg%20%D0%B1%D0%B5%D0%B7%20%D1%84%D0%BE%D0%BD%D0%B0.png" alt="Telegram">
+    </a>
+    <a href="https://lanit.ru/" target="_blank" rel="noopener">
+      <img src="https://raw.githubusercontent.com/Akiyakayne/VALORANT_CYBER_CUP-/refs/heads/main/%D0%9B%D0%90%D0%9D%D0%98%D0%A2.png" alt="LANIT">
+    </a>
+  </div>
+</footer>
+
+</div><!-- /page -->
+
+<script>
+// ══════════════════════════════════════════════════════
+//  BRACKET LAYOUT ENGINE
+//  1) Measure each slot's natural height (card height)
+//  2) Assign vertical positions so child sits centred
+//     between its two parents
+//  3) Draw SVG connector lines + arrowheads
+// ══════════════════════════════════════════════════════
+
+const CARD_W  = 280;   // --cw
+const H_GAP   = 56;    // --gap (space between columns)
+const V_PAD   = 28;    // top/bottom padding of .bracket-scroll
+const LABEL_H = 30;    // col-label height (absolute, above row)
+
+function buildBracket(rowId, svgId, accentColor) {
+  const row   = document.getElementById(rowId);
+  const svg   = document.getElementById(svgId);
+  if (!row || !svg) return;
+
+  const cols  = Array.from(row.querySelectorAll('.col'));
+
+  // ── 1. Collect slots per column ──────────────────────
+  // Each slot gets an object: { el, card, slotKey, fromKeys[] }
+  const slotMap = {};   // key "col-idx" → slot obj
+
+  cols.forEach((colEl, ci) => {
+    const slots = Array.from(colEl.querySelectorAll('.slot'));
+    slots.forEach((slotEl, si) => {
+      const key  = `${ci}-${si}`;
+      const from = slotEl.dataset.from ? slotEl.dataset.from.split(',').map(s => s.trim()) : [];
+      const card = slotEl.querySelector('.mc');
+      slotMap[key] = { el: slotEl, card, colIdx: ci, slotIdx: si, fromKeys: from, top: 0, h: 0 };
+    });
+  });
+
+  // ── 2. Measure natural card heights ──────────────────
+  // First: reset all slots to no height / no position so browser can measure cards
+  Object.values(slotMap).forEach(s => {
+    s.el.style.cssText = 'display:block; position:absolute; visibility:hidden;';
+    s.h = s.card ? s.card.getBoundingClientRect().height : 80;
+  });
+
+  // ── 3. Compute TOP positions via recursion ────────────
+  // Col 0: stack naturally with SPACING between them
+  const SPACING = 14; // gap between sibling cards
+
+  function getSlot(key) { return slotMap[key]; }
+
+  // For a slot with parents: its top = midpoint of parents' centres − h/2
+  // For col-0 slots: stacked sequentially
+  const col0Slots = Object.values(slotMap).filter(s => s.colIdx === 0).sort((a,b) => a.slotIdx - b.slotIdx);
+  let cursor = 0;
+  col0Slots.forEach(s => {
+    s.top = cursor;
+    cursor += s.h + SPACING;
+  });
+
+  // Process remaining columns in order
+  const maxCol = Math.max(...Object.values(slotMap).map(s => s.colIdx));
+  for (let ci = 1; ci <= maxCol; ci++) {
+    const colSlots = Object.values(slotMap).filter(s => s.colIdx === ci).sort((a,b) => a.slotIdx - b.slotIdx);
+    colSlots.forEach(s => {
+      if (s.fromKeys.length === 0) {
+        // no parents declared — keep sequential relative to siblings
+        const prevSibling = colSlots[s.slotIdx - 1];
+        s.top = prevSibling ? prevSibling.top + prevSibling.h + SPACING : 0;
+      } else if (s.fromKeys.length === 1) {
+        // single parent: align centre to parent centre
+        const p = getSlot(s.fromKeys[0]);
+        if (p) s.top = (p.top + p.h / 2) - s.h / 2;
+      } else {
+        // two parents: centre between their centres
+        const tops = s.fromKeys.map(k => { const p = getSlot(k); return p ? p.top + p.h / 2 : 0; });
+        const mid  = (Math.min(...tops) + Math.max(...tops)) / 2;
+        s.top = mid - s.h / 2;
+      }
+    });
+  }
+
+  // ── 4. Normalise (no slot can start < 0) ─────────────
+  const minTop = Math.min(...Object.values(slotMap).map(s => s.top));
+  if (minTop < 0) Object.values(slotMap).forEach(s => s.top -= minTop);
+
+  // ── 5. Compute total height & width ──────────────────
+  const totalH = Math.max(...Object.values(slotMap).map(s => s.top + s.h)) + V_PAD;
+  const totalW = cols.length * (CARD_W + H_GAP) + H_GAP;
+
+  // ── 6. Position cols absolutely inside row ───────────
+  row.style.cssText = `position:relative; width:${totalW}px; height:${totalH + LABEL_H}px;`;
+
+  cols.forEach((colEl, ci) => {
+    const x = ci * (CARD_W + H_GAP) + H_GAP / 2;
+    colEl.style.cssText = `position:absolute; left:${x}px; top:${LABEL_H}px; width:${CARD_W}px;`;
+  });
+
+  // ── 7. Position slots ─────────────────────────────────
+  Object.values(slotMap).forEach(s => {
+    s.el.style.cssText = `display:block; position:absolute; top:${s.top}px; left:0; width:${CARD_W}px; visibility:visible;`;
+  });
+
+  // ── 8. Draw SVG connectors ───────────────────────────
+  svg.setAttribute('width',  totalW);
+  svg.setAttribute('height', totalH + LABEL_H);
+  svg.innerHTML = '';
+
+  // Arrow marker
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const markerId = `arr-${svgId}`;
+  defs.innerHTML = `
+    <marker id="${markerId}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0.5 L5,3 L0,5.5 Z" fill="${accentColor}" opacity="0.7"/>
+    </marker>`;
+  svg.appendChild(defs);
+
+  function colX(ci) { return ci * (CARD_W + H_GAP) + H_GAP / 2; }
+
+  Object.values(slotMap).forEach(s => {
+    if (s.fromKeys.length === 0) return;
+
+    // Target card right-centre in SVG coords
+    const targetX = colX(s.colIdx);
+    const targetY = LABEL_H + s.top + s.h / 2;
+
+    if (s.fromKeys.length === 1) {
+      // Straight line: parent right → child left
+      const p  = getSlot(s.fromKeys[0]);
+      if (!p) return;
+      const px = colX(p.colIdx) + CARD_W;
+      const py = LABEL_H + p.top + p.h / 2;
+      const mx = px + H_GAP * 0.55;
+
+      drawPath(svg, px, py, mx, py, mx, targetY, targetX, targetY,
+               accentColor, markerId);
+
+    } else if (s.fromKeys.length === 2) {
+      // Y-connector: two parents merge into one child
+      const p1 = getSlot(s.fromKeys[0]);
+      const p2 = getSlot(s.fromKeys[1]);
+      if (!p1 || !p2) return;
+
+      const p1x = colX(p1.colIdx) + CARD_W;
+      const p1y = LABEL_H + p1.top + p1.h / 2;
+      const p2x = colX(p2.colIdx) + CARD_W;
+      const p2y = LABEL_H + p2.top + p2.h / 2;
+
+      // Midpoint X for the elbow
+      const elbowX = p1x + H_GAP * 0.5;
+      const midY   = (p1y + p2y) / 2;
+
+      // Line from p1 → elbow top
+      drawPath(svg, p1x, p1y, elbowX, p1y, elbowX, midY, null, null,
+               accentColor, null);
+      // Line from p2 → elbow bottom
+      drawPath(svg, p2x, p2y, elbowX, p2y, elbowX, midY, null, null,
+               accentColor, null);
+      // Vertical tick at elbow midY
+      // Then elbow → child
+      drawPath(svg, elbowX, midY, elbowX + H_GAP * 0.45, midY, null, null, targetX, targetY,
+               accentColor, markerId);
+    }
+  });
+}
+
+// Draws a 2-bend cubic bezier path (or simpler line) between control points
+function drawPath(svg, x1, y1, cx1, cy1, cx2, cy2, x2, y2, color, markerId) {
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  let d;
+  if (x2 !== null && x2 !== undefined) {
+    d = `M${x1},${y1} L${cx1},${cy1} L${cx2 !== null ? cx2 : cx1},${cy2 !== null ? cy2 : cy1} L${x2},${y2}`;
+  } else {
+    d = `M${x1},${y1} L${cx1},${cy1} L${cx2},${cy2}`;
+  }
+  path.setAttribute('d', d);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', color);
+  path.setAttribute('stroke-width', '1.5');
+  path.setAttribute('stroke-opacity', '0.45');
+  if (markerId && x2 !== null) path.setAttribute('marker-end', `url(#${markerId})`);
+  svg.appendChild(path);
+}
+
+// ── Run after fonts & images ──────────────────────────
+function init() {
+  buildBracket('upper-row', 'upper-svg', '#ff4655');
+  buildBracket('lower-row', 'lower-svg', '#00e5ff');
+
+  // ── Entrance animation ──
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll('.mc').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(8px)';
+    el.style.transition = `opacity 0.35s ease ${(i % 12) * 0.025}s, transform 0.35s ease ${(i % 12) * 0.025}s, border-color 0.25s, box-shadow 0.25s`;
+    io.observe(el);
+  });
+}
+
+// ── Drag-scroll ───────────────────────────────────────
+document.querySelectorAll('.bracket-scroll').forEach(el => {
+  let dn = false, sx, sl;
+  el.addEventListener('mousedown',  e => { dn = true; sx = e.pageX - el.offsetLeft; sl = el.scrollLeft; });
+  el.addEventListener('mousemove',  e => { if (!dn) return; e.preventDefault(); el.scrollLeft = sl - (e.pageX - el.offsetLeft - sx) * 1.5; });
+  ['mouseup', 'mouseleave'].forEach(ev => el.addEventListener(ev, () => { dn = false; }));
+  el.addEventListener('touchstart', e => { sx = e.touches[0].pageX; sl = el.scrollLeft; }, { passive: true });
+  el.addEventListener('touchmove',  e => { el.scrollLeft = sl - (e.touches[0].pageX - sx) * 1.2; }, { passive: true });
+});
+
+// Wait for full layout
+if (document.readyState === 'complete') init();
+else window.addEventListener('load', init);
+</script>
 </body>
 </html>
-
-
-
-
-
